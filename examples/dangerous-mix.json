@@ -1,0 +1,58 @@
+{
+  "history": [
+    {
+      "version": "v10",
+      "clusters": [
+        {
+          "name": "web",
+          "lbPolicy": "ROUND_ROBIN",
+          "endpointWeights": { "10.0.0.1:8080": 1, "10.0.0.2:8080": 1 }
+        }
+      ],
+      "endpoints": {
+        "web": [
+          { "address": "10.0.0.1", "port": 8080 },
+          { "address": "10.0.0.2", "port": 8080 }
+        ]
+      },
+      "routes": [
+        { "name": "web-route", "prefix": "/", "cluster": "web" }
+      ]
+    },
+    {
+      "version": "v11",
+      "clusters": [
+        {
+          "name": "web",
+          "lbPolicy": "LEAST_REQUEST",
+          "endpointWeights": { "10.0.0.1:8080": 1, "10.0.0.3:8080": 4 }
+        }
+      ],
+      "endpoints": {
+        "web": [
+          { "address": "10.0.0.1", "port": 8080 },
+          { "address": "10.0.0.3", "port": 8080 }
+        ]
+      },
+      "routes": [
+        { "name": "web-route", "prefix": "/", "cluster": "web" }
+      ]
+    }
+  ],
+  "proxies": [
+    {
+      "name": "proxy-a",
+      "proxyVersion": "1.31.0",
+      "cds": { "version": "v10", "status": "ACK" },
+      "eds": { "version": "v11", "status": "ACK" },
+      "rds": { "version": "v11", "status": "ACK" }
+    },
+    {
+      "name": "proxy-b",
+      "proxyVersion": "1.31.0",
+      "cds": { "version": "v11", "status": "ACK" },
+      "eds": { "version": "v11", "status": "ACK" },
+      "rds": { "version": "v11", "status": "NACK", "lastAckedVersion": "v10" }
+    }
+  ]
+}

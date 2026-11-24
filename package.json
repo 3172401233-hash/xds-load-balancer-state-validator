@@ -1,0 +1,14 @@
+{
+  "name": "xds-load-balancer-state-validator",
+  "version": "1.0.0",
+  "description": "Offline validator for xDS (CDS/EDS/RDS) state combinations across proxies",
+  "type": "module",
+  "engines": {
+    "node": ">=24.16.0"
+  },
+  "scripts": {
+    "test": "node --test",
+    "validate": "node src/cli.js"
+  },
+  "license": "MIT"
+}
